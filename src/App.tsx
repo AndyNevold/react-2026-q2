@@ -8,7 +8,7 @@ import type { AppState } from './types/types';
 import { Toast } from './components/Toast/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 
-export class App extends Component<AppState> {
+export class App extends Component<Record<string, never>, AppState> {
   state = {
     items: [],
     isLoading: false,
@@ -32,6 +32,7 @@ export class App extends Component<AppState> {
         data = await fetchPokemonByName(term);
       } else {
         data = await fetchPokemonList(20, 0);
+        console.log(data);
       }
 
       this.setState({ items: data.results, isLoading: false });
