@@ -14,7 +14,7 @@ const mockItem = {
 };
 
 describe('Card', () => {
-  it('renders pokemon name', () => {
+  it('renders pokemon name', async () => {
     vi.mocked(fetchPokemonDetails).mockResolvedValue({
       types: [
         { slot: 1, type: { name: 'grass' } },
@@ -23,8 +23,9 @@ describe('Card', () => {
     } as PokemonDetails);
 
     render(<Card item={mockItem} />);
-
-    expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
   });
 
   it('shows details after successful fetch', async () => {

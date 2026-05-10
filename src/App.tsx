@@ -32,7 +32,6 @@ export class App extends Component<Record<string, never>, AppState> {
         data = await fetchPokemonByName(term);
       } else {
         data = await fetchPokemonList(20, 0);
-        console.log(data);
       }
 
       this.setState({ items: data.results, isLoading: false });

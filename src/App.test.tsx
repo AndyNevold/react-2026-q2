@@ -57,4 +57,36 @@ describe('App', () => {
       expect(screen.getByText('bulbasaur')).toBeInTheDocument();
     });
   });
+
+  it('shows toast', async () => {
+    vi.mocked(fetchPokemonByName).mockRejectedValue(new Error('Network error'));
+
+    render(<App />);
+
+    const user = userEvent.setup();
+
+    const input = screen.getByPlaceholderText('Enter Pokemon name');
+    await user.type(input, 'unknown');
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Network error')).toBeInTheDocument();
+    });
+  });
+
+  it('does not fetch again for the same term', async () => {
+    vi.mocked(fetchPokemonList).mockResolvedValue(mockApiResponse);
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
+
+    const user = userEvent.setup();
+
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(fetchPokemonList).toHaveBeenCalledTimes(1);
+  });
 });
