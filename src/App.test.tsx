@@ -89,4 +89,25 @@ describe('App', () => {
 
     expect(fetchPokemonList).toHaveBeenCalledTimes(1);
   });
+
+  it('close button clicked', async () => {
+    vi.mocked(fetchPokemonByName).mockRejectedValue(new Error('Error message'));
+
+    render(<App />);
+
+    const input = screen.getByPlaceholderText('Enter Pokemon name');
+
+    const user = userEvent.setup();
+
+    await user.type(input, 'unknown');
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Error message')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole('button', { name: '✕' }));
+
+    expect(screen.queryByText('Error message')).not.toBeInTheDocument();
+  });
 });

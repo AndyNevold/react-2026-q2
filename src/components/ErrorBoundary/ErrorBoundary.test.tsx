@@ -6,7 +6,6 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { ErrorButton } from '../ErrorButton/ErrorButton';
 import userEvent from '@testing-library/user-event';
 
-// Компонент, который бросает ошибку
 class BrokenComponent extends Component {
   render(): ReactNode {
     throw new Error('Test error');
