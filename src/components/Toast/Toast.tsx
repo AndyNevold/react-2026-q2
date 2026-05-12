@@ -1,23 +1,20 @@
-import { Component, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import type { ToastProps } from '../../types/types';
 
-export class Toast extends Component<ToastProps> {
-  componentDidMount(): void {
-    setTimeout(() => {
-      this.props.onClose();
+export function Toast({ message, onClose }: ToastProps): ReactNode {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
     }, 3000);
-  }
+    return () => clearTimeout(timer);
+  }, [onClose]);
 
-  render(): ReactNode {
-    const { message, onClose } = this.props;
-
-    return (
-      <div className="toast">
-        <span className="toast__message">{message}</span>
-        <button onClick={onClose} className="toast__close">
-          ✕
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="toast">
+      <span className="toast__message">{message}</span>
+      <button onClick={onClose} className="toast__close">
+        ✕
+      </button>
+    </div>
+  );
 }

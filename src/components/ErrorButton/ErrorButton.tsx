@@ -1,20 +1,19 @@
-import { Component, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
-export class ErrorButton extends Component {
-  state = { throwError: false };
+export function ErrorButton(): ReactNode {
+  const [throwError, setThrowError] = useState(false);
 
-  handleClick = (): void => {
-    this.setState({ throwError: true });
+  const handleClick = (): void => {
+    setThrowError(true);
   };
 
-  render(): ReactNode {
-    if (this.state.throwError) {
-      throw new Error('Simulated error for testing');
-    }
-    return (
-      <button onClick={this.handleClick} className="error-button">
-        Trigger Error
-      </button>
-    );
+  if (throwError) {
+    throw new Error('Simulated error for testing');
   }
+
+  return (
+    <button onClick={handleClick} className="error-button">
+      Trigger Error
+    </button>
+  );
 }
