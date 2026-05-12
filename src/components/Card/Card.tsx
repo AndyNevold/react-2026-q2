@@ -1,34 +1,35 @@
-import { Component, type ReactNode } from 'react';
-import type { CardProps, CardState } from '../../types/types';
+import { useState, useEffect, type ReactNode } from 'react';
+import type { CardProps } from '../../types/types';
 import { fetchPokemonDetails } from '../../api/api';
 import { Loader } from '../Loader/Loader';
 
-export class Card extends Component<CardProps, CardState> {
-  state: CardState = { types: null, isLoading: true };
+export function Card({ item }: CardProps): ReactNode {
+  const [types, setTypes] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  async componentDidMount(): Promise<void> {
-    try {
-      const details = await fetchPokemonDetails(this.props.item.url);
-      const types = details.types
-        .map((ability) => ability.type.name)
-        .join(', ');
-      this.setState({ types, isLoading: false });
-    } catch {
-      this.setState({ types: 'Unknown', isLoading: false });
+  useEffect(() => {
+    async function loadDetails() {
+      try {
+        const details = await fetchPokemonDetails(item.url);
+        const typeNames = details.types
+          .map((ability) => ability.type.name)
+          .join(', ');
+        setTypes(typeNames);
+      } catch {
+        setTypes('Unknown');
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
+    loadDetails();
+  }, [item.url]);
 
-  render(): ReactNode {
-    const { item } = this.props;
-    const { types, isLoading } = this.state;
-
-    return (
-      <div className="card">
-        <span className="card__name">{item.name}</span>
-        <span className="card__description">
-          {isLoading ? <Loader /> : types}
-        </span>
-      </div>
-    );
-  }
+  return (
+    <div className="card">
+      <span className="card__name">{item.name}</span>
+      <span className="card__description">
+        {isLoading ? <Loader /> : types}
+      </span>
+    </div>
+  );
 }
