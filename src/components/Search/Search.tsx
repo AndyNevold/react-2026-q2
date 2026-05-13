@@ -1,51 +1,46 @@
-import { Component, type ChangeEvent, type ReactNode } from 'react';
-import { storageService } from '../../services/storage';
-import type { SearchProps, SearchState } from '../../types/types';
+import { useEffect, type ChangeEvent, type ReactNode } from 'react';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { STORAGE_KEYS } from '../../constants/constants';
+import type { SearchProps } from '../../types/types';
 
-export class Search extends Component<SearchProps, SearchState> {
-  savedTerm = storageService.get() || '';
-  state = { inputValue: this.savedTerm };
+export function Search({ onSearch }: SearchProps): ReactNode {
+  const {
+    storedValue: inputValue,
+    setValue: setInputValue,
+    getValue,
+  } = useLocalStorage(STORAGE_KEYS.pokemonSearch, '');
 
-  componentDidMount(): void {
-    const { onSearch } = this.props;
-    const { inputValue } = this.state;
+  useEffect(() => {
     onSearch(inputValue.trim());
-  }
+  }, []);
 
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ inputValue: event.target.value });
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setInputValue(event.target.value);
   };
 
-  handleSearchClick = (): void => {
-    const { onSearch } = this.props;
-    const { inputValue } = this.state;
+  const handleSearchClick = (): void => {
     const inputValueTrim = inputValue.trim();
-
-    const savedTerm = storageService.get() || '';
+    const savedTerm = getValue();
 
     if (inputValueTrim !== savedTerm) {
-      storageService.set(inputValueTrim);
+      setInputValue(inputValueTrim);
     }
 
     onSearch(inputValueTrim);
   };
 
-  render(): ReactNode {
-    const { inputValue } = this.state;
-
-    return (
-      <div className="search">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={this.handleInputChange}
-          placeholder="Enter Pokemon name"
-          className="search__input"
-        />
-        <button onClick={this.handleSearchClick} className="search__button">
-          Search
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="search">
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Enter Pokemon name"
+        className="search__input"
+      />
+      <button onClick={handleSearchClick} className="search__button">
+        Search
+      </button>
+    </div>
+  );
 }
