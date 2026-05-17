@@ -13,6 +13,8 @@ const mockItem = {
   url: 'https://pokeapi.co/api/v2/pokemon/1/',
 };
 
+const mockOnClick = vi.fn();
+
 describe('Card', () => {
   it('renders pokemon name', async () => {
     vi.mocked(fetchPokemonDetails).mockResolvedValue({
@@ -22,7 +24,8 @@ describe('Card', () => {
       ],
     } as PokemonDetails);
 
-    render(<Card item={mockItem} />);
+    render(<Card item={mockItem} onClick={mockOnClick} />);
+
     await waitFor(() => {
       expect(screen.getByText('bulbasaur')).toBeInTheDocument();
     });
@@ -36,7 +39,7 @@ describe('Card', () => {
       ],
     } as PokemonDetails);
 
-    render(<Card item={mockItem} />);
+    render(<Card item={mockItem} onClick={mockOnClick} />);
 
     await waitFor(() => {
       expect(screen.getByText('grass, poison')).toBeInTheDocument();
@@ -48,7 +51,7 @@ describe('Card', () => {
       new Error('Network error')
     );
 
-    render(<Card item={mockItem} />);
+    render(<Card item={mockItem} onClick={mockOnClick} />);
 
     await waitFor(() => {
       expect(screen.getByText('Unknown')).toBeInTheDocument();
