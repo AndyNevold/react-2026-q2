@@ -436,3 +436,15 @@ nav a:hover {
   width: 10px;
   height: 10px;
 }
+
+.card .card__loader {
+  gap: 4px;
+  min-height: auto;
+  justify-content: flex-start;
+  width: auto;
+}
+
+.card .card__loader-dot {
+  width: 6px;
+  height: 6px;
+}
