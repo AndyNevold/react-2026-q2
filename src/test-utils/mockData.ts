@@ -13,7 +13,7 @@ export const mockApiResponse: ApiResponse = {
 export const mockPokemonDetails: PokemonDetails = {
   id: 25,
   name: 'pikachu',
-  sprites: { front_default: '' },
+  sprites: { front_default: 'https://example.com/sprite.png' },
   types: [{ slot: 1, type: { name: 'electric' } }],
   abilities: [],
 };
