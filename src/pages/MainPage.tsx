@@ -1,25 +1,29 @@
 import { useState, useCallback, type ReactNode } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CardList } from '../components/CardList/CardList';
 import { Search } from '../components/Search/Search';
 import { ErrorButton } from '../components/ErrorButton/ErrorButton';
 import { fetchPokemonByName, fetchPokemonList } from '../api/api';
 import type { Pokemon } from '../types/types';
 import { Toast } from '../components/Toast/Toast';
+import { POKEMON_CONFIG } from '../constants/constants';
 
 export function MainPage(): ReactNode {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get('page')) || 1;
+
   const [items, setItems] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState(0);
 
-  const handleSearch = useCallback(
-    async (term: string): Promise<void> => {
-      if (term === currentSearchTerm && items.length > 0) {
-        return;
-      }
+  const totalPages = Math.ceil(totalCount / POKEMON_CONFIG.limit);
 
+  const loadData = useCallback(
+    async (term: string, pageNum: number): Promise<void> => {
       setIsLoading(true);
-      setCurrentSearchTerm(term);
 
       try {
         let data;
@@ -27,10 +31,12 @@ export function MainPage(): ReactNode {
         if (term) {
           data = await fetchPokemonByName(term);
         } else {
-          data = await fetchPokemonList(20, 0);
+          const offset = (pageNum - 1) * POKEMON_CONFIG.limit;
+          data = await fetchPokemonList(POKEMON_CONFIG.limit, offset);
         }
 
         setItems(data.results);
+        setTotalCount(data.count);
       } catch (err) {
         setToastMessage(err instanceof Error ? err.message : 'Unknown error');
         setItems([]);
@@ -38,7 +44,28 @@ export function MainPage(): ReactNode {
         setIsLoading(false);
       }
     },
-    [currentSearchTerm, items.length]
+    []
+  );
+
+  const handleSearch = useCallback(
+    (term: string): void => {
+      if (term === currentSearchTerm && items.length > 0) {
+        return;
+      }
+
+      setCurrentSearchTerm(term);
+      setSearchParams(term ? { page: '1' } : {});
+      loadData(term, 1);
+    },
+    [currentSearchTerm, items.length, loadData, setSearchParams]
+  );
+
+  const handlePageChange = useCallback(
+    (newPage: number): void => {
+      setSearchParams({ page: String(newPage) });
+      loadData(currentSearchTerm, newPage);
+    },
+    [currentSearchTerm, loadData, setSearchParams]
   );
 
   const handleCloseToast = useCallback((): void => {
@@ -54,7 +81,13 @@ export function MainPage(): ReactNode {
         <Search onSearch={handleSearch} />
       </section>
       <section className="app__results-section">
-        <CardList items={items} isLoading={isLoading} />
+        <CardList
+          items={items}
+          isLoading={isLoading}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </section>
       <ErrorButton />
     </>

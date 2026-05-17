@@ -59,6 +59,9 @@ export interface ErrorBoundaryState {
 export interface CardListProps {
   items: Pokemon[];
   isLoading: boolean;
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 export interface CardProps {

@@ -5,3 +5,7 @@ export const API_CONFIG = {
 export const STORAGE_KEYS = {
   pokemonSearch: 'pokemon-search',
 };
+
+export const POKEMON_CONFIG = {
+  limit: 10,
+};
