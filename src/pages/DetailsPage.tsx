@@ -17,6 +17,7 @@ export function DetailsPage({ id, onClose }: DetailsPageProps): ReactNode {
     async function loadDetails() {
       try {
         setIsLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 300));
         const data = await fetchPokemonDetails(
           `https://pokeapi.co/api/v2/pokemon/${id}/`
         );

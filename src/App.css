@@ -60,6 +60,8 @@ body {
 }
 
 .app__results-section {
+  flex: 1;
+  min-width: 0;
   padding: 24px 32px 32px;
 }
 
@@ -67,6 +69,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 350px;
 }
 
 .card {
@@ -416,6 +419,20 @@ nav a:hover {
 }
 
 .details-panel .card__loader-dot {
+  width: 10px;
+  height: 10px;
+}
+
+.app__results-section .card__loader {
+  display: flex;
+  gap: 6px;
+  min-height: 200px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.app__results-section .card__loader-dot {
   width: 10px;
   height: 10px;
 }

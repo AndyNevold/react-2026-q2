@@ -24,11 +24,10 @@ export function MainPage(): ReactNode {
 
   const loadData = useCallback(
     async (term: string, pageNum: number): Promise<void> => {
-      setIsLoading(true);
-
       try {
+        setIsLoading(true);
         let data;
-
+        await new Promise((resolve) => setTimeout(resolve, 300));
         if (term) {
           data = await fetchPokemonByName(term);
         } else {
@@ -75,8 +74,10 @@ export function MainPage(): ReactNode {
     (item: Pokemon): void => {
       const id = item.url.split('/').filter(Boolean).pop();
       if (id) {
-        const params: Record<string, string> = { details: id };
-        if (page > 1) params.page = String(page);
+        const params: Record<string, string> = {
+          page: String(page),
+          details: id,
+        };
         setSearchParams(params);
       }
     },
