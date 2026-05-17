@@ -349,10 +349,10 @@ nav a:hover {
 }
 
 .details-panel {
-  flex: 1;
+  width: 350px;
+  min-width: 350px;
   padding: 24px;
   background: #f8f9ff;
-  border-left: 2px solid #d0d4f7;
   position: relative;
 }
 
@@ -406,4 +406,16 @@ nav a:hover {
 
 .app__master-detail {
   display: flex;
+}
+
+.details-panel .card__loader {
+  gap: 6px;
+  min-height: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-panel .card__loader-dot {
+  width: 10px;
+  height: 10px;
 }
