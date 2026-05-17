@@ -9,10 +9,13 @@ export function CardList({
   page,
   totalPages,
   onPageChange,
+  onItemClick,
 }: CardListProps): ReactNode {
   const renderItems = useCallback((): ReactNode => {
-    return items.map((item) => <Card key={item.name} item={item} />);
-  }, [items]);
+    return items.map((item) => (
+      <Card key={item.name} item={item} onClick={onItemClick} />
+    ));
+  }, [items, onItemClick]);
 
   if (isLoading) {
     return (

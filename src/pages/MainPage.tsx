@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { CardList } from '../components/CardList/CardList';
 import { Search } from '../components/Search/Search';
 import { ErrorButton } from '../components/ErrorButton/ErrorButton';
+import { DetailsPage } from './DetailsPage';
 import { fetchPokemonByName, fetchPokemonList } from '../api/api';
 import type { Pokemon } from '../types/types';
 import { Toast } from '../components/Toast/Toast';
@@ -10,8 +11,8 @@ import { POKEMON_CONFIG } from '../constants/constants';
 
 export function MainPage(): ReactNode {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const page = Number(searchParams.get('page')) || 1;
+  const detailsId = searchParams.get('details');
 
   const [items, setItems] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,11 +63,31 @@ export function MainPage(): ReactNode {
 
   const handlePageChange = useCallback(
     (newPage: number): void => {
-      setSearchParams({ page: String(newPage) });
+      const params: Record<string, string> = { page: String(newPage) };
+      if (detailsId) params.details = detailsId;
+      setSearchParams(params);
       loadData(currentSearchTerm, newPage);
     },
-    [currentSearchTerm, loadData, setSearchParams]
+    [currentSearchTerm, detailsId, loadData, setSearchParams]
   );
+
+  const handleItemClick = useCallback(
+    (item: Pokemon): void => {
+      const id = item.url.split('/').filter(Boolean).pop();
+      if (id) {
+        const params: Record<string, string> = { details: id };
+        if (page > 1) params.page = String(page);
+        setSearchParams(params);
+      }
+    },
+    [setSearchParams, page]
+  );
+
+  const handleCloseDetails = useCallback((): void => {
+    const params: Record<string, string> = {};
+    if (page > 1) params.page = String(page);
+    setSearchParams(params);
+  }, [setSearchParams, page]);
 
   const handleCloseToast = useCallback((): void => {
     setToastMessage(null);
@@ -80,15 +101,24 @@ export function MainPage(): ReactNode {
       <section className="app__search-section">
         <Search onSearch={handleSearch} />
       </section>
-      <section className="app__results-section">
-        <CardList
-          items={items}
-          isLoading={isLoading}
-          page={page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </section>
+
+      <div className={detailsId ? 'app__master-detail' : ''}>
+        <section className="app__results-section">
+          <CardList
+            items={items}
+            isLoading={isLoading}
+            page={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            onItemClick={handleItemClick}
+          />
+        </section>
+
+        {detailsId && (
+          <DetailsPage id={detailsId} onClose={handleCloseDetails} />
+        )}
+      </div>
+
       <ErrorButton />
     </>
   );

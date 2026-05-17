@@ -12,9 +12,7 @@ export function App(): ReactNode {
       <div className="app">
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/about" style={{ marginLeft: 16 }}>
-            About
-          </Link>
+          <Link to="/about">About</Link>
         </nav>
 
         <Routes>

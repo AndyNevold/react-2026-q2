@@ -75,8 +75,19 @@ body {
   align-items: center;
   padding: 14px 20px;
   background: #f8f9ff;
-  border: 1px solid #d0d4f7;
+  border: 2px solid #d0d4f7;
   border-radius: 12px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s,
+    border-color 0.2s;
+}
+
+.card:hover {
+  background: #fff;
+  border-color: #3b4cca;
+  transform: translateX(4px);
 }
 
 .card__name {
@@ -335,4 +346,64 @@ nav a:hover {
 .pagination__info {
   font-weight: bold;
   color: #3b4cca;
+}
+
+.details-panel {
+  flex: 1;
+  padding: 24px;
+  background: #f8f9ff;
+  border-left: 2px solid #d0d4f7;
+  position: relative;
+}
+
+.details-panel__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  background: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.details-panel__close:hover {
+  background: #aa0000;
+}
+
+.details-panel h2 {
+  text-transform: capitalize;
+  color: #3b4cca;
+  margin-bottom: 16px;
+}
+
+.details-panel h3 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  color: #3b4cca;
+}
+
+.details-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.details-panel li {
+  padding: 4px 0;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.details-panel__image {
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+.app__master-detail {
+  display: flex;
 }
