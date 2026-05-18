@@ -6,6 +6,16 @@ export function AboutPage(): ReactNode {
       <h1>About</h1>
       <p>Pokemon Search App</p>
       <p>
+        Author:{' '}
+        <a
+          href="https://github.com/andynevold"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          AndyNevold
+        </a>
+      </p>
+      <p>
         Created as part of the{' '}
         <a
           href="https://rs.school/courses/reactjs"
