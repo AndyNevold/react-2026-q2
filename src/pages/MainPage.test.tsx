@@ -86,4 +86,28 @@ describe('MainPage', () => {
       expect(screen.getByText('Network error')).toBeInTheDocument();
     });
   });
+
+  it('closes details panel when clicking on results section', async () => {
+    vi.mocked(fetchPokemonList).mockResolvedValue(mockApiResponse);
+
+    render(
+      <MemoryRouter initialEntries={['/?page=1&details=1']}>
+        <MainPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
+    });
+
+    const resultsSection = screen
+      .getByText('bulbasaur')
+      .closest('.app__results-section');
+    if (resultsSection) {
+      const user = userEvent.setup();
+      await user.click(resultsSection);
+    }
+
+    expect(screen.queryByText('✕')).not.toBeInTheDocument();
+  });
 });

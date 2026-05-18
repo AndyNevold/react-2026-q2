@@ -7,6 +7,11 @@ export function Card({ item, onClick }: CardProps): ReactNode {
   const [types, setTypes] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleClick = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    onClick(item);
+  };
+
   useEffect(() => {
     async function loadDetails() {
       try {
@@ -25,7 +30,7 @@ export function Card({ item, onClick }: CardProps): ReactNode {
   }, [item.url]);
 
   return (
-    <div className="card" onClick={() => onClick(item)}>
+    <div className="card" onClick={handleClick}>
       <span className="card__name">{item.name}</span>
       <span className="card__description">
         {isLoading ? <Loader /> : types}

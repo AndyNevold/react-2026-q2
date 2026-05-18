@@ -63,6 +63,7 @@ export interface CardListProps {
   totalPages: number;
   onPageChange: (page: number) => void;
   onItemClick: (item: Pokemon) => void;
+  onClick?: () => void;
 }
 
 export interface CardProps {

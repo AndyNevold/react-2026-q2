@@ -104,7 +104,10 @@ export function MainPage(): ReactNode {
       </section>
 
       <div className={detailsId ? 'app__master-detail' : ''}>
-        <section className="app__results-section">
+        <section
+          className="app__results-section"
+          onClick={() => detailsId && handleCloseDetails()}
+        >
           <CardList
             items={items}
             isLoading={isLoading}
