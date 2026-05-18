@@ -32,7 +32,10 @@ export function CardList({
       {totalPages > 1 && (
         <div className="pagination">
           <button
-            onClick={() => onPageChange(page - 1)}
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              onPageChange(page - 1);
+            }}
             disabled={page <= 1}
             className="pagination__button"
           >
@@ -42,7 +45,10 @@ export function CardList({
             Page {page} of {totalPages}
           </span>
           <button
-            onClick={() => onPageChange(page + 1)}
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              onPageChange(page + 1);
+            }}
             disabled={page >= totalPages}
             className="pagination__button"
           >
