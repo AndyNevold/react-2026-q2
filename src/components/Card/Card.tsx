@@ -2,12 +2,29 @@ import { useState, useEffect, type ReactNode } from 'react';
 import type { CardProps } from '../../types/types';
 import { fetchPokemonDetails } from '../../api/api';
 import { Loader } from '../Loader/Loader';
+import { usePokemonStore } from '../../store/usePokemonStore';
 
 export function Card({ item, onClick }: CardProps): ReactNode {
   const [types, setTypes] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleClick = (e: React.MouseEvent): void => {
+  const getIdFromUrl = (url: string): string => {
+    return url.split('/').filter(Boolean).pop() || '';
+  };
+
+  const pokemonId = getIdFromUrl(item.url);
+
+  const selectedIds = usePokemonStore((state) => state.selectedIds);
+  const toggleSelected = usePokemonStore((state) => state.toggleSelected);
+
+  const isSelected = selectedIds.includes(pokemonId);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    toggleSelected(pokemonId);
+  };
+
+  const handleCardClick = (e: React.MouseEvent): void => {
     e.stopPropagation();
     onClick(item);
   };
@@ -30,7 +47,12 @@ export function Card({ item, onClick }: CardProps): ReactNode {
   }, [item.url]);
 
   return (
-    <div className="card" onClick={handleClick}>
+    <div className="card" onClick={handleCardClick}>
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={handleCheckboxChange}
+      />
       <span className="card__name">{item.name}</span>
       <span className="card__description">
         {isLoading ? <Loader /> : types}

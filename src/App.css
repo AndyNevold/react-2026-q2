@@ -455,3 +455,11 @@ nav a:hover {
   width: 6px;
   height: 6px;
 }
+
+.card input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: #3b4cca;
+}
