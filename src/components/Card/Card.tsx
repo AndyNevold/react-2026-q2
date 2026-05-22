@@ -19,8 +19,11 @@ export function Card({ item, onClick }: CardProps): ReactNode {
 
   const isSelected = selectedIds.includes(pokemonId);
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxClick = (e: React.MouseEvent<HTMLInputElement>) => {
     e.stopPropagation();
+  };
+
+  const handleCheckboxChange = () => {
     toggleSelected(pokemonId);
   };
 
@@ -52,6 +55,7 @@ export function Card({ item, onClick }: CardProps): ReactNode {
         type="checkbox"
         checked={isSelected}
         onChange={handleCheckboxChange}
+        onClick={handleCheckboxClick}
       />
       <span className="card__name">{item.name}</span>
       <span className="card__description">
