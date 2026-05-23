@@ -8,6 +8,7 @@ import { fetchPokemonByName, fetchPokemonList } from '../api/api';
 import type { Pokemon } from '../types/types';
 import { Toast } from '../components/Toast/Toast';
 import { POKEMON_CONFIG } from '../constants/constants';
+import { usePokemonStore } from '../store/usePokemonStore';
 
 export function MainPage(): ReactNode {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +20,8 @@ export function MainPage(): ReactNode {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
+
+  const setStoreItems = usePokemonStore((state) => state.setItems);
 
   const totalPages = Math.ceil(totalCount / POKEMON_CONFIG.limit);
 
@@ -35,16 +38,18 @@ export function MainPage(): ReactNode {
           data = await fetchPokemonList(POKEMON_CONFIG.limit, offset);
         }
 
+        setStoreItems(data.results);
         setItems(data.results);
         setTotalCount(data.count);
       } catch (err) {
         setToastMessage(err instanceof Error ? err.message : 'Unknown error');
         setItems([]);
+        setStoreItems([]);
       } finally {
         setIsLoading(false);
       }
     },
-    []
+    [setStoreItems]
   );
 
   const handleSearch = useCallback(

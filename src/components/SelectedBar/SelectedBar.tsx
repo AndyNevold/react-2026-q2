@@ -1,15 +1,27 @@
+import { fetchPokemonDetails } from '../../api/api';
 import { usePokemonStore } from '../../store/usePokemonStore';
+import { downloadPokemonsAsCSV } from '../../utils/csvExport';
 import './SelectedBar.css';
 
 export function SelectedBar() {
   const selectedIds = usePokemonStore((state) => state.selectedIds);
   const clearSelected = usePokemonStore((state) => state.clearSelected);
+  const items = usePokemonStore((state) => state.items);
 
   const count = selectedIds.length;
 
   if (count === 0) {
     return null;
   }
+
+  const handleDownload = async () => {
+    const selectedPokemons = items.filter((item) => {
+      const id = item.url.split('/').filter(Boolean).pop();
+      return id && selectedIds.includes(id);
+    });
+
+    await downloadPokemonsAsCSV(selectedPokemons, fetchPokemonDetails);
+  };
 
   return (
     <div className="selected-bar">
@@ -25,7 +37,10 @@ export function SelectedBar() {
           >
             Unselect all
           </button>
-          <button className="selected-bar__button selected-bar__button--download">
+          <button
+            onClick={handleDownload}
+            className="selected-bar__button selected-bar__button--download"
+          >
             Download
           </button>
         </div>
