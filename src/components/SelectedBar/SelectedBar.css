@@ -5,8 +5,8 @@
   transform: translateX(-50%);
   z-index: 1000;
 
-  background: #3b4cca;
-  color: white;
+  background: var(--selected-bar-bg, #3b4cca);
+  color: var(--selected-bar-text, white);
   border-radius: 48px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   padding: 12px 24px;

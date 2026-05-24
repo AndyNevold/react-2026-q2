@@ -6,22 +6,22 @@
 
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f5f0e8;
+  background: var(--bg);
 }
 
 .app {
   max-width: 900px;
   margin: 30px auto;
-  background: white;
+  background: var(--bg);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 
 .app__search-section {
-  background: #ffcb05;
+  background: var(--search-bg, #ffcb05);
   padding: 28px 32px;
-  border-bottom: 4px solid #3b4cca;
+  border-bottom: 4px solid var(--search-border, #3b4cca);
 }
 
 .search {
@@ -32,7 +32,7 @@ body {
 .search__input {
   flex: 1;
   padding: 12px 20px;
-  border: 2px solid #3b4cca;
+  border: 2px solid var(--search-border, #3b4cca);
   border-radius: 30px;
   font-size: 16px;
   outline: none;
@@ -77,8 +77,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: #f8f9ff;
-  border: 2px solid #d0d4f7;
+  background: var(--code-bg);
+  border: 2px solid var(--border);
   border-radius: 12px;
   cursor: pointer;
   transition:
@@ -88,7 +88,7 @@ body {
 }
 
 .card:hover {
-  background: #fff;
+  background: var(--bg);
   border-color: #3b4cca;
   transform: translateX(4px);
 }
@@ -109,8 +109,8 @@ body {
 .card-list__empty {
   padding: 48px 20px;
   text-align: center;
-  background: #f8f9ff;
-  border: 1px solid #d0d4f7;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
   border-radius: 12px;
   color: #666;
 }
@@ -238,7 +238,7 @@ body {
 
 nav {
   padding: 16px 32px;
-  background: #3b4cca;
+  background: var(--nav-bg, #3b4cca);
   display: flex;
   justify-content: center;
   gap: 24px;
@@ -462,4 +462,20 @@ nav a:hover {
   margin-right: 12px;
   cursor: pointer;
   accent-color: #3b4cca;
+}
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.3);
 }
