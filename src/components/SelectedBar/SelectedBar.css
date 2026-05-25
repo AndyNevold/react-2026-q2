@@ -76,7 +76,7 @@
   display: inline-block;
   width: 30px;
   height: 30px;
-  background-image: url('../../../public/pic.png');
+  background-image: url('/pic.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
