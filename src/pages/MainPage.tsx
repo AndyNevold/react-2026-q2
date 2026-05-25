@@ -30,7 +30,6 @@ export function MainPage(): ReactNode {
       try {
         setIsLoading(true);
         let data;
-        await new Promise((resolve) => setTimeout(resolve, 300));
         if (term) {
           data = await fetchPokemonByName(term);
         } else {
