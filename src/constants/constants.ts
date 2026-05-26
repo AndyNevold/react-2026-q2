@@ -9,3 +9,6 @@ export const STORAGE_KEYS = {
 export const POKEMON_CONFIG = {
   limit: 10,
 };
+
+export const STALE_TIME =
+  Number(import.meta.env.VITE_QUERY_STALE_TIME) || 1000 * 60 * 5;
