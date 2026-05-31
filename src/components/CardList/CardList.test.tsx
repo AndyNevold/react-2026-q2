@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { CardList } from './CardList';
+import { createTestWrapper } from '../../test-utils/test-wrapper';
 
 vi.mock('../Card/Card', () => ({
   Card: ({
@@ -28,9 +29,15 @@ const defaultProps = {
   onItemClick: vi.fn(),
 };
 
+const TestWrapper = createTestWrapper({});
+
 describe('CardList', () => {
   it('renders cards', () => {
-    render(<CardList items={mockItems} isLoading={false} {...defaultProps} />);
+    render(
+      <TestWrapper>
+        <CardList items={mockItems} isLoading={false} {...defaultProps} />
+      </TestWrapper>
+    );
 
     const cards = screen.getAllByTestId('card');
     expect(cards).toHaveLength(2);
@@ -39,13 +46,21 @@ describe('CardList', () => {
   });
 
   it('show loader', () => {
-    render(<CardList items={[]} isLoading={true} {...defaultProps} />);
+    render(
+      <TestWrapper>
+        <CardList items={[]} isLoading={true} {...defaultProps} />
+      </TestWrapper>
+    );
 
     expect(screen.getByLabelText('Loading')).toBeInTheDocument();
   });
 
   it('shows empty message', () => {
-    render(<CardList items={[]} isLoading={false} {...defaultProps} />);
+    render(
+      <TestWrapper>
+        <CardList items={[]} isLoading={false} {...defaultProps} />
+      </TestWrapper>
+    );
 
     expect(screen.getByText('No items found')).toBeInTheDocument();
   });

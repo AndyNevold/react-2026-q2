@@ -1,9 +1,11 @@
-import { fetchPokemonDetails } from '../../api/api';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePokemonStore } from '../../store/usePokemonStore';
 import { downloadPokemonsAsCSV } from '../../utils/csvExport';
 import './SelectedBar.css';
+import { getIdFromUrl } from '../../utils/helpers';
 
 export function SelectedBar() {
+  const queryClient = useQueryClient();
   const selectedIds = usePokemonStore((state) => state.selectedIds);
   const clearSelected = usePokemonStore((state) => state.clearSelected);
   const items = usePokemonStore((state) => state.items);
@@ -16,11 +18,11 @@ export function SelectedBar() {
 
   const handleDownload = async () => {
     const selectedPokemons = items.filter((item) => {
-      const id = item.url.split('/').filter(Boolean).pop();
+      const id = getIdFromUrl(item.url);
       return id && selectedIds.includes(id);
     });
 
-    await downloadPokemonsAsCSV(selectedPokemons, fetchPokemonDetails);
+    await downloadPokemonsAsCSV(selectedPokemons, queryClient);
   };
 
   return (

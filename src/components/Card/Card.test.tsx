@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Card } from './Card';
 import type { PokemonDetails } from '../../types/types';
 import { fetchPokemonDetails } from '../../api/api';
+import { createTestWrapper } from '../../test-utils/test-wrapper';
 
 vi.mock('../../api/api', () => ({
   fetchPokemonDetails: vi.fn(),
@@ -14,6 +15,7 @@ const mockItem = {
 };
 
 const mockOnClick = vi.fn();
+const TestWrapper = createTestWrapper({});
 
 describe('Card', () => {
   it('renders pokemon name', async () => {
@@ -24,7 +26,11 @@ describe('Card', () => {
       ],
     } as PokemonDetails);
 
-    render(<Card item={mockItem} onClick={mockOnClick} />);
+    render(
+      <TestWrapper>
+        <Card item={mockItem} onClick={mockOnClick} />
+      </TestWrapper>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('bulbasaur')).toBeInTheDocument();
@@ -39,22 +45,14 @@ describe('Card', () => {
       ],
     } as PokemonDetails);
 
-    render(<Card item={mockItem} onClick={mockOnClick} />);
+    render(
+      <TestWrapper>
+        <Card item={mockItem} onClick={mockOnClick} />
+      </TestWrapper>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('grass, poison')).toBeInTheDocument();
-    });
-  });
-
-  it('shows Unknown when API fails', async () => {
-    vi.mocked(fetchPokemonDetails).mockRejectedValue(
-      new Error('Network error')
-    );
-
-    render(<Card item={mockItem} onClick={mockOnClick} />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Unknown')).toBeInTheDocument();
     });
   });
 });

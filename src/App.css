@@ -87,6 +87,16 @@ body {
     border-color 0.2s;
 }
 
+.card__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card__right {
+  flex-shrink: 0;
+}
+
 .card:hover {
   background: var(--bg);
   border-color: #3b4cca;
@@ -478,4 +488,19 @@ nav a:hover {
 .theme-toggle:hover {
   transform: scale(1.05);
   background: rgba(255, 255, 255, 0.3);
+}
+
+.pagination__button--refresh {
+  background: #4caf50;
+  margin-left: 8px;
+  min-width: 120px;
+}
+
+.pagination__button--refresh:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.pagination__button--refresh:disabled {
+  background: #cccccc;
+  cursor: wait;
 }

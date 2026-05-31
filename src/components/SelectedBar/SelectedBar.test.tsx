@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-
+import { createTestWrapper } from '../../test-utils/test-wrapper';
 import { usePokemonStore } from '../../store/usePokemonStore';
 import { SelectedBar } from './SelectedBar';
 import userEvent from '@testing-library/user-event';
@@ -11,11 +11,17 @@ vi.mock('../../utils/csvExport', () => ({
   downloadPokemonsAsCSV: vi.fn(),
 }));
 
+const TestWrapper = createTestWrapper({});
+
 describe('SelectedBar', () => {
   it('does not show when no items selected', () => {
     usePokemonStore.setState({ selectedIds: [], items: [] });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     expect(screen.queryByText('Selected:')).not.toBeInTheDocument();
   });
@@ -26,7 +32,11 @@ describe('SelectedBar', () => {
       items: [{ name: 'pikachu', url: 'url' }],
     });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     expect(screen.getByText('Selected: 1 item')).toBeInTheDocument();
   });
@@ -40,7 +50,11 @@ describe('SelectedBar', () => {
       ],
     });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     expect(screen.getByText('Selected: 2 items')).toBeInTheDocument();
   });
@@ -48,7 +62,11 @@ describe('SelectedBar', () => {
   it('has "Unselect all" button', () => {
     usePokemonStore.setState({ selectedIds: ['1'], items: [] });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     expect(screen.getByText('Unselect all')).toBeInTheDocument();
   });
@@ -56,7 +74,11 @@ describe('SelectedBar', () => {
   it('has "Download" button', () => {
     usePokemonStore.setState({ selectedIds: ['1'], items: [] });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     expect(screen.getByText('Download')).toBeInTheDocument();
   });
@@ -70,7 +92,11 @@ describe('SelectedBar', () => {
       items: mockItems,
     });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     const downloadButton = screen.getByText('Download');
     await user.click(downloadButton);
@@ -89,7 +115,11 @@ describe('SelectedBar', () => {
       clearSelected: mockClearSelected,
     });
 
-    render(<SelectedBar />);
+    render(
+      <TestWrapper>
+        <SelectedBar />
+      </TestWrapper>
+    );
 
     const unselectButton = screen.getByText('Unselect all');
     await user.click(unselectButton);

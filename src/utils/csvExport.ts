@@ -1,14 +1,25 @@
 import type { Pokemon, PokemonDetails } from '../types/types';
+import type { QueryClient } from '@tanstack/react-query';
+import { fetchPokemonDetails } from '../api/api';
+import { POKEMON_API_URL } from '../constants/constants';
+import { getIdFromUrl } from './helpers';
 
 export async function downloadPokemonsAsCSV(
   pokemons: Pokemon[],
-  fetchDetails: (url: string) => Promise<PokemonDetails>
+  queryClient: QueryClient
 ) {
   if (pokemons.length === 0) return;
 
   const detailsPromises = pokemons.map(async (pokemon) => {
+    const id = getIdFromUrl(pokemon.url);
+    const url = `${POKEMON_API_URL}/${id}/`;
+
     try {
-      const details = await fetchDetails(pokemon.url);
+      const details = await queryClient.fetchQuery<PokemonDetails>({
+        queryKey: ['pokemon-details', id],
+        queryFn: () => fetchPokemonDetails(url),
+      });
+
       return {
         name: pokemon.name,
         types: details.types.map((atr) => atr.type.name).join(', '),
@@ -27,7 +38,6 @@ export async function downloadPokemonsAsCSV(
 
   const headers = ['Pokemon', 'Type(s)', 'URL'];
   const rows = items.map((item) => [item.name, item.types, item.url]);
-
   const csvContent = [headers, ...rows].map((row) => row.join(',')).join('\n');
 
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

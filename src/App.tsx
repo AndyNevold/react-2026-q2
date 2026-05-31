@@ -8,6 +8,7 @@ import './App.css';
 import { SelectedBar } from './components/SelectedBar/SelectedBar';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ThemeToggle } from './components/ThemeToggle/ThemeToggle';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export function App(): ReactNode {
   return (
@@ -28,6 +29,8 @@ export function App(): ReactNode {
 
           <SelectedBar />
         </div>
+
+        <ReactQueryDevtools initialIsOpen={false} />
       </ErrorBoundary>
     </ThemeProvider>
   );

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 import { MainPage } from './MainPage';
+import { createTestWrapper } from '../test-utils/test-wrapper';
 
 vi.mock('../api/api', () => ({
   fetchPokemonList: vi.fn(),
@@ -26,6 +26,8 @@ vi.mock('../components/Card/Card', () => ({
 import { fetchPokemonList, fetchPokemonByName } from '../api/api';
 import { mockApiResponse } from '../test-utils/mockData';
 
+const TestWrapper = createTestWrapper({});
+
 describe('MainPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -36,9 +38,9 @@ describe('MainPage', () => {
     vi.mocked(fetchPokemonList).mockResolvedValue(mockApiResponse);
 
     render(
-      <MemoryRouter>
+      <TestWrapper>
         <MainPage />
-      </MemoryRouter>
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -53,9 +55,9 @@ describe('MainPage', () => {
     vi.mocked(fetchPokemonByName).mockResolvedValue(mockApiResponse);
 
     render(
-      <MemoryRouter>
+      <TestWrapper>
         <MainPage />
-      </MemoryRouter>
+      </TestWrapper>
     );
 
     const input = screen.getByPlaceholderText('Enter Pokemon name');
@@ -72,9 +74,9 @@ describe('MainPage', () => {
     vi.mocked(fetchPokemonByName).mockRejectedValue(new Error('Network error'));
 
     render(
-      <MemoryRouter>
+      <TestWrapper>
         <MainPage />
-      </MemoryRouter>
+      </TestWrapper>
     );
 
     const input = screen.getByPlaceholderText('Enter Pokemon name');
@@ -90,10 +92,14 @@ describe('MainPage', () => {
   it('closes details panel when clicking on results section', async () => {
     vi.mocked(fetchPokemonList).mockResolvedValue(mockApiResponse);
 
+    const TestWrapperWithDetails = createTestWrapper({
+      initialEntries: ['/?page=1&details=1'],
+    });
+
     render(
-      <MemoryRouter initialEntries={['/?page=1&details=1']}>
+      <TestWrapperWithDetails>
         <MainPage />
-      </MemoryRouter>
+      </TestWrapperWithDetails>
     );
 
     await waitFor(() => {

@@ -1,7 +1,6 @@
-import { useState, useEffect, type ReactNode } from 'react';
-import { fetchPokemonDetails } from '../api/api';
+import { type ReactNode } from 'react';
+import { usePokemonDetails } from '../hooks/usePokemonQueries';
 import { Loader } from '../components/Loader/Loader';
-import type { PokemonDetails } from '../types/types';
 
 interface DetailsPageProps {
   id: string;
@@ -9,26 +8,7 @@ interface DetailsPageProps {
 }
 
 export function DetailsPage({ id, onClose }: DetailsPageProps): ReactNode {
-  const [details, setDetails] = useState<PokemonDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadDetails() {
-      try {
-        setIsLoading(true);
-        const data = await fetchPokemonDetails(
-          `https://pokeapi.co/api/v2/pokemon/${id}/`
-        );
-        setDetails(data);
-      } catch {
-        setError('Failed to load details');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadDetails();
-  }, [id]);
+  const { data: details, isLoading, error } = usePokemonDetails(id);
 
   if (isLoading) {
     return (
@@ -41,7 +21,9 @@ export function DetailsPage({ id, onClose }: DetailsPageProps): ReactNode {
   if (error || !details) {
     return (
       <div className="details-panel">
-        <p>{error || 'No details available'}</p>
+        <p>
+          {error instanceof Error ? error.message : 'Failed to load details'}
+        </p>
         <button onClick={onClose} className="details-panel__close">
           ✕
         </button>
