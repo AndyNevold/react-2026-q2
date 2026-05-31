@@ -1,22 +1,26 @@
 import { describe, it, expect, vi } from 'vitest';
+import { QueryClient } from '@tanstack/react-query';
 import { downloadPokemonsAsCSV } from './csvExport';
 import { mockApiResponse } from '../test-utils/mockData';
 
 describe('downloadPokemonsAsCSV', () => {
   it('nothing happens when no pokemons selected', async () => {
-    const mockFetch = vi.fn();
+    const queryClient = new QueryClient();
+    const mockFetchDetails = vi.fn();
 
-    await downloadPokemonsAsCSV([], mockFetch);
+    await downloadPokemonsAsCSV([], queryClient);
 
-    expect(mockFetch).not.toHaveBeenCalled();
+    expect(mockFetchDetails).not.toHaveBeenCalled();
   });
 
   it('fetches details for each pokemon', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({ types: [] });
+    const queryClient = new QueryClient();
     const pokemons = mockApiResponse.results;
 
-    await downloadPokemonsAsCSV(pokemons, mockFetch);
+    vi.spyOn(queryClient, 'fetchQuery').mockResolvedValue({ types: [] });
 
-    expect(mockFetch).toHaveBeenCalledTimes(2);
+    await downloadPokemonsAsCSV(pokemons, queryClient);
+
+    expect(queryClient.fetchQuery).toHaveBeenCalledTimes(2);
   });
 });

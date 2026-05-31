@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { DetailsPage } from './DetailsPage';
+import { createTestWrapper } from '../test-utils/test-wrapper';
 
 vi.mock('../api/api', () => ({
   fetchPokemonDetails: vi.fn(),
@@ -9,11 +10,17 @@ vi.mock('../api/api', () => ({
 import { fetchPokemonDetails } from '../api/api';
 import { mockPokemonDetails } from '../test-utils/mockData';
 
+const TestWrapper = createTestWrapper({});
+
 describe('DetailsPage', () => {
   it('renders pokemon details', async () => {
     vi.mocked(fetchPokemonDetails).mockResolvedValue(mockPokemonDetails);
 
-    render(<DetailsPage id="1" onClose={vi.fn()} />);
+    render(
+      <TestWrapper>
+        <DetailsPage id="1" onClose={vi.fn()} />
+      </TestWrapper>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('pikachu')).toBeInTheDocument();
@@ -24,7 +31,11 @@ describe('DetailsPage', () => {
   it('renders close button', async () => {
     vi.mocked(fetchPokemonDetails).mockResolvedValue(mockPokemonDetails);
 
-    render(<DetailsPage id="1" onClose={vi.fn()} />);
+    render(
+      <TestWrapper>
+        <DetailsPage id="1" onClose={vi.fn()} />
+      </TestWrapper>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('✕')).toBeInTheDocument();

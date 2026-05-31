@@ -1,14 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { App } from './App';
+import { createTestWrapper } from './test-utils/test-wrapper';
+
+const TestWrapper = createTestWrapper({});
 
 describe('App', () => {
   it('renders navigation and home page', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <TestWrapper>
         <App />
-      </MemoryRouter>
+      </TestWrapper>
     );
 
     expect(screen.getByText('Home')).toBeInTheDocument();
@@ -19,10 +21,12 @@ describe('App', () => {
   });
 
   it('renders about page on /about route', () => {
+    const TestWrapperAbout = createTestWrapper({ initialEntries: ['/about'] });
+
     render(
-      <MemoryRouter initialEntries={['/about']}>
+      <TestWrapperAbout>
         <App />
-      </MemoryRouter>
+      </TestWrapperAbout>
     );
 
     const aboutElements = screen.getAllByText('About');
@@ -31,10 +35,12 @@ describe('App', () => {
   });
 
   it('renders 404 page on unknown route', () => {
+    const TestWrapper404 = createTestWrapper({ initialEntries: ['/unknown'] });
+
     render(
-      <MemoryRouter initialEntries={['/unknown']}>
+      <TestWrapper404>
         <App />
-      </MemoryRouter>
+      </TestWrapper404>
     );
 
     expect(screen.getByText('404')).toBeInTheDocument();

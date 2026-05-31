@@ -5,6 +5,7 @@ import {
   fetchPokemonDetails,
 } from '../api/api';
 import type { ApiResponse, PokemonDetails } from '../types/types';
+import { POKEMON_API_URL } from '../constants/constants';
 
 interface UsePokemonListParams {
   limit: number;
@@ -29,10 +30,11 @@ export function usePokemonByName(name: string) {
   });
 }
 
-export function usePokemonDetails(url: string) {
-  return useQuery<PokemonDetails>({
-    queryKey: ['pokemon-details', url],
+export function usePokemonDetails(id: string) {
+  const url = `${POKEMON_API_URL}/${id}/`;
 
+  return useQuery<PokemonDetails>({
+    queryKey: ['pokemon-details', id],
     queryFn: () => fetchPokemonDetails(url),
   });
 }
