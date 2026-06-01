@@ -116,4 +116,37 @@ describe('MainPage', () => {
 
     expect(screen.queryByText('✕')).not.toBeInTheDocument();
   });
+
+  it('caches data', async () => {
+    vi.mocked(fetchPokemonList).mockResolvedValue(mockApiResponse);
+
+    const TestWrapper = createTestWrapper({});
+    const { unmount } = render(
+      <TestWrapper>
+        <MainPage />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('card')).toHaveLength(2);
+    });
+
+    expect(fetchPokemonList).toHaveBeenCalledTimes(1);
+
+    vi.mocked(fetchPokemonList).mockClear();
+
+    unmount();
+
+    render(
+      <TestWrapper>
+        <MainPage />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('card')).toHaveLength(2);
+    });
+
+    expect(fetchPokemonList).not.toHaveBeenCalled();
+  });
 });
