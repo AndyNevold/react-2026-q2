@@ -1,37 +1,22 @@
-import './App.css';
-
-import { useFormStore } from './store/formStore';
+import { useState } from 'react';
+import { Modal } from './components/Modal/Modal';
 
 export function App() {
-  const { submissions, addSubmission, countries } = useFormStore();
-
-  console.log('countries:', countries);
-  console.log('submissions:', submissions.length);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div>
-      <button
-        onClick={() =>
-          addSubmission({
-            name: 'Test',
-            age: 20,
-            email: 'test@test.com',
-            gender: 'male',
-            termsAccepted: true,
-            imageBase64: '',
-            password: 'Test123!',
-            country: 'USA',
-          })
-        }
-      >
-        Add Test Submission
-      </button>
+      <h1>Forms Demo</h1>
+      <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
 
-      {submissions.map((sub) => (
-        <div key={sub.id}>
-          {sub.name} - {sub.email}
-        </div>
-      ))}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Test Window"
+      >
+        <p>Form will be here</p>
+        <button onClick={() => setIsModalOpen(false)}>Close</button>
+      </Modal>
     </div>
   );
 }
