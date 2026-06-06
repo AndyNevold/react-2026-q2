@@ -1,0 +1,85 @@
+.selected-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  background: var(--selected-bar-bg, #3b4cca);
+  color: var(--selected-bar-text, white);
+  border-radius: 48px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 12px 24px;
+
+  animation: slideUp 0.3s ease-out;
+}
+
+.selected-bar__content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.selected-bar__count {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.selected-bar__buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.selected-bar__button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.selected-bar__button--clear {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.selected-bar__button--clear:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.selected-bar__button--download {
+  background: #ffcb05;
+  color: #3b4cca;
+}
+
+.selected-bar__button--download:hover {
+  background: #ffd536;
+  transform: scale(1.02);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.selected-bar__icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url('/pic.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+  margin-right: 8px;
+}
