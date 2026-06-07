@@ -1,0 +1,163 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.inputError {
+  border-color: #e74c3c;
+}
+
+.inputError:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.radioLabel input {
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.submitButton {
+  flex: 1;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    transform 0.1s,
+    opacity 0.2s;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #e0e4e5;
+}
+
+.strengthIndicator {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.strengthWeak {
+  color: #e74c3c;
+}
+
+.strengthMedium {
+  color: #f39c12;
+}
+
+.strengthStrong {
+  color: #27ae60;
+}
+
+.imagePreview {
+  margin-top: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, #ddd, transparent);
+  margin: 4px 0;
+}
